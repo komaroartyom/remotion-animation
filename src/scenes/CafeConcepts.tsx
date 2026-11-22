@@ -46,9 +46,9 @@ const CharacterCard: React.FC<{x:number;variant:0|1|2}> = ({x,variant}) => {
  const f=useCurrentFrame();
  const bob=Math.sin(f/9+variant)*2;
  const labels = ['РЕАЛИСТИЧНАЯ ИЛЛЮСТРАЦИЯ','КАРИКАТУРНЫЙ КОМИКС','АНИМЕ / ГРАФИЧНЫЙ СТИЛЬ'];
- return <g transform={\`translate(\${x} 0)\`}>
+ return <g transform={`translate(${x} 0)`}>
    <rect x="-145" y="0" width="290" height="380" rx="18" fill="#f4ead8" stroke="#242126" strokeWidth="4"/>
-   {variant===0 && <g transform={\`translate(0 \${bob})\`}>
+   {variant===0 && <g transform={`translate(0 ${bob})`}>
      <defs>
        <linearGradient id="realCoat" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#344b63"/><stop offset="1" stopColor="#182b40"/></linearGradient>
        <linearGradient id="realSkin" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#f5d0b2"/><stop offset="1" stopColor="#c98769"/></linearGradient>
@@ -79,7 +79,7 @@ const CharacterCard: React.FC<{x:number;variant:0|1|2}> = ({x,variant}) => {
        <path d="M25 308H55L58 316H19Q17 312 25 308M72 308H100L108 316H69Z" fill="#242328"/>
      </g>
    </g>}
-   {variant===1 && <g transform={\`translate(0 \${bob})\`} stroke="#211c1c" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+   {variant===1 && <g transform={`translate(0 ${bob})`} stroke="#211c1c" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
      <g>
        <path d="M-113 222Q-130 164 -95 147Q-65 130 -37 157L-30 282H-119Z" fill="#e3a52e"/>
        <path d="M-91 154L-74 182L-55 154L-49 231H-99Z" fill="#fff0c9"/>
@@ -105,7 +105,7 @@ const CharacterCard: React.FC<{x:number;variant:0|1|2}> = ({x,variant}) => {
        <path d="M21 308H60L64 319H13Q9 313 21 308M78 308H113L124 319H72Z" fill="#211e22"/>
      </g>
    </g>}
-   {variant===2 && <g transform={\`translate(0 \${bob})\`} stroke="#25202b" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round">
+   {variant===2 && <g transform={`translate(0 ${bob})`} stroke="#25202b" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round">
      <g>
        <path d="M-111 225L-99 160L-70 143L-42 160L-31 286H-119Z" fill="#493c66"/>
        <path d="M-94 157L-72 186L-52 157L-48 239H-98Z" fill="#f8f0e7"/>
