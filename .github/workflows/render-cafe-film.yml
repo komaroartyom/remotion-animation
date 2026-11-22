@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Render 8-second 3D cafe trial
-        run: npx remotion render src/index.ts CafeTrial out/cafe-trial.mp4
+        run: npx remotion render src/index.ts CafeTrial out/cafe-trial.mp4 --gl=swangle
       - name: Commit rendered trial
         run: |
           git config user.name "github-actions[bot]"
