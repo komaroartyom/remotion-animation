@@ -15,6 +15,7 @@ const Cafe3D: React.FC = () => {
     <ThreeCanvas width={width} height={height} camera={{position: [cameraX, 2.25, cameraZ], fov: 48}} style={{position: 'absolute', inset: 0, backgroundColor: '#101722'}}>
       <ambientLight intensity={0.55} />
       <WaiterBillboard />
+      <GuestBillboard />
       <hemisphereLight args={['#b9c9dc', '#21161a', 0.65]} />
       <spotLight position={[-2.7, 4.7, 1.5]} angle={0.62} penumbra={0.8} intensity={95} color="#ffc77d" castShadow />
       <pointLight position={[2.5, 2.5, -2.2]} intensity={18} color="#d48b52" />
@@ -74,6 +75,45 @@ const WaiterBillboard: React.FC = () => {
     <planeGeometry args={[1, 1]} />
     <meshBasicMaterial map={texture} transparent alphaTest={0.02} side={THREE.DoubleSide} />
   </mesh>;
+};
+
+
+// Elderly visitor: a second flat 2D cutout using the same Y-axis billboard rule.
+const GuestBillboard: React.FC = () => {
+  const mesh = useRef<THREE.Mesh>(null);
+  const texture = useMemo(() => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="760" viewBox="0 0 420 760">
+      <g stroke="#171b23" stroke-width="13" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M92 310 Q110 250 205 250 Q300 250 328 330 L350 555 L70 555Z" fill="#343944"/>
+        <path d="M150 270 L208 338 L266 270 L280 490 L138 490Z" fill="#b9aa92" stroke-width="8"/>
+        <path d="M145 270 Q105 180 165 120 Q235 82 292 142 Q330 205 278 275 Q220 315 165 275Z" fill="#c69b7e"/>
+        <path d="M140 195 Q120 95 210 82 Q315 88 320 195 L285 160 Q240 130 195 155 L155 220Z" fill="#b8b3a7"/>
+        <path d="M166 205 Q185 190 205 205 M240 205 Q260 190 280 205" fill="none" stroke-width="8"/>
+        <path d="M215 220 L205 242 L225 246" fill="none" stroke-width="6"/>
+        <path d="M190 268 Q218 280 248 265" fill="none" stroke="#765047" stroke-width="6"/>
+        <path d="M105 535 L95 690 L72 735 L155 735 L195 590 L235 735 L318 735 L288 680 L310 535Z" fill="#252a34"/>
+        <path d="M80 720 H160 L168 750 H55 Q50 735 80 720 M240 720 H325 L350 750 H230Z" fill="#10131a"/>
+        <path d="M102 345 Q55 390 72 475 L105 510 Q130 510 130 480 L140 405" fill="#343944"/>
+        <path d="M318 345 Q365 390 348 475 L315 510 Q290 510 290 480 L280 405" fill="#343944"/>
+      </g></svg>`;
+    const map = new THREE.TextureLoader().load('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg));
+    map.colorSpace = THREE.SRGBColorSpace;
+    return map;
+  }, []);
+  useFrame(({camera}) => {
+    if (!mesh.current) return;
+    mesh.current.lookAt(camera.position.x, mesh.current.position.y, camera.position.z);
+  });
+  return <>
+    <mesh ref={mesh} position={[1.35, 0.1, -1.05]} scale={[1.35, 2.55, 1]}>
+      <planeGeometry args={[1, 1]} />
+      <meshBasicMaterial map={texture} transparent alphaTest={0.02} side={THREE.DoubleSide} />
+    </mesh>
+    <mesh position={[1.35, -1.035, -1.05]} rotation={[-Math.PI / 2, 0, 0]}>
+      <circleGeometry args={[0.62, 40]} />
+      <meshBasicMaterial color="#09080b" transparent opacity={0.32} depthWrite={false} />
+    </mesh>
+  </>;
 };
 
 const WaiterIllustration: React.FC = () => {
