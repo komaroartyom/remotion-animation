@@ -92,6 +92,40 @@ const Guest: React.FC = () => {
   </svg>;
 };
 
+
+const MemoryPhoto: React.FC = () => {
+  const f = useCurrentFrame();
+  const opacity = interpolate(f, [0, 18, 288], [0, 1, 1], clamp);
+  const lift = interpolate(f, [0, 28], [90, 0], clamp);
+  const scale = interpolate(f, [0, 28], [0.82, 1], clamp);
+  const glow = 0.12 + Math.max(0, Math.sin(f / 24)) * 0.08;
+  return <svg viewBox="0 0 941 1672" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}}>
+    <defs>
+      <linearGradient id="photoPaper" x2="0" y2="1"><stop stopColor="#f3e4c7"/><stop offset="1" stopColor="#cbb894"/></linearGradient>
+      <linearGradient id="photoImage" x2="0" y2="1"><stop stopColor="#7e8b86"/><stop offset="1" stopColor="#35434a"/></linearGradient>
+      <filter id="photoShadow"><feGaussianBlur stdDeviation="18"/></filter>
+    </defs>
+    <g opacity={opacity} transform={`translate(0 ${lift}) translate(470 1270) rotate(-7) scale(${scale}) translate(-470 -1270)`}>
+      <ellipse cx="470" cy="1450" rx="210" ry="48" fill="#000" opacity=".55" filter="url(#photoShadow)"/>
+      <rect x="292" y="1040" width="356" height="430" rx="8" fill="#09090d" opacity=".28"/>
+      <rect x="278" y="1018" width="356" height="430" rx="7" fill="url(#photoPaper)" stroke="#f8ebd0" strokeWidth="8"/>
+      <rect x="302" y="1042" width="308" height="330" fill="url(#photoImage)"/>
+      <circle cx="452" cy="1158" r="125" fill="#d9b47d" opacity={glow}/>
+      <path d="M302 1315Q365 1250 430 1290T610 1280V1372H302Z" fill="#273c3d" opacity=".8"/>
+      <path d="M330 1368Q326 1270 374 1235Q415 1208 449 1240Q480 1272 480 1368Z" fill="#4d5660"/>
+      <circle cx="405" cy="1200" r="42" fill="#c69c7a"/>
+      <path d="M360 1192Q355 1148 405 1145Q455 1150 449 1195L430 1175Q400 1160 374 1180Z" fill="#66564a"/>
+      <path d="M463 1368Q460 1240 515 1190Q562 1152 585 1200Q610 1240 602 1368Z" fill="#5b4639"/>
+      <circle cx="534" cy="1155" r="58" fill="#c49a78"/>
+      <path d="M478 1150Q480 1076 541 1080Q600 1088 590 1162L568 1130Q527 1105 492 1148Z" fill="#d2c7b2"/>
+      <path d="M470 1195Q490 1220 525 1210Q555 1222 580 1194" fill="none" stroke="#ead5b6" strokeWidth="9"/>
+      <rect x="302" y="1042" width="308" height="330" fill="none" stroke="#e8d6b8" strokeWidth="5" opacity=".65"/>
+      <text x="456" y="1412" textAnchor="middle" fontFamily="Georgia,serif" fontSize="24" fill="#59483a">Папа и я</text>
+      <path d="M345 1430H567" stroke="#9b8265" strokeWidth="2" opacity=".6"/>
+    </g>
+  </svg>;
+};
+
 const RainOverlay: React.FC = () => {
   const f = useCurrentFrame();
   return <svg viewBox="0 0 941 1672" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}}>
@@ -114,13 +148,13 @@ export const CafeFilm: React.FC = () => {
     <Sequence from={192} durationInFrames={192}><Waiter /><Guest /></Sequence>
     <Sequence from={384} durationInFrames={216}><Waiter /><Guest /></Sequence>
     <Sequence from={600} durationInFrames={264}><Waiter /><Guest /></Sequence>
-    <Sequence from={864} durationInFrames={288}><Waiter /></Sequence>
+    <Sequence from={864} durationInFrames={288}><Waiter /><MemoryPhoto /></Sequence>
     <Sequence from={1152} durationInFrames={288}><Waiter /></Sequence>
     <Caption start={0} end={190}>Кафе почти закрылось. Дождь всё не прекращался.</Caption>
     <Caption start={200} end={380}>Колокольчик над дверью тихо звякнул.</Caption>
     <Caption start={390} end={590}>«Мне, пожалуйста, чашку кофе. Как в тот самый вечер».</Caption>
     <Caption start={610} end={850}>«Ты ведь обещал, что не забудешь».</Caption>
-    <Caption start={870} end={1125}>Официант обернулся — но посетителя уже не было.</Caption>
+    <Caption start={870} end={1125}>На столе осталась старая фотография. Официант узнал себя и отца.</Caption>
     <Caption start={1160} end={1438}>Некоторые обещания время не умеет стирать.</Caption>
   </AbsoluteFill>;
 };
