@@ -1,0 +1,37 @@
+name: Render MP4
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Render vertical video
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Render video
+        run: |
+          mkdir -p out
+          npm run render
+
+      - name: Upload rendered MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-video
+          path: out/main.mp4
+          if-no-files-found: error
+          retention-days: 7
