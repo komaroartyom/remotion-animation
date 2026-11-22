@@ -1,0 +1,23 @@
+{
+  "name": "remotion-animation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vertical 2D animation workspace built with Remotion",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "build": "remotion bundle src/index.ts",
+    "render": "remotion render src/index.ts Main out/main.mp4",
+    "still": "remotion still src/index.ts Main out/preview.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.409",
+    "@remotion/google-fonts": "4.0.409",
+    "remotion": "4.0.409",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "typescript": "5.8.3"
+  }
+}
