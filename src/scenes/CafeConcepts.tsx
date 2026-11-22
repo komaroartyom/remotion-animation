@@ -30,7 +30,7 @@ const CafeModule: React.FC<{x:number;kind:0|1|2}> = ({x,kind}) => {
     <group position={[.9,.55,.15]}>
       <mesh position={[0,.62,0]}><cylinderGeometry args={[.62,.62,.13,40]}/>{wood(palette.trim,.38)}</mesh>
       {[0,1,2].map(i=><mesh key={i} position={[Math.cos(i*2.1)*.4,.28,Math.sin(i*2.1)*.4]}><cylinderGeometry args={[.045,.055,.55,12]}/>{wood('#211a18')}</mesh>)}
-      <mesh position={[0,.76,0]}><cylinderGeometry args={[.09,.12,.17,24]}/><meshStandardMaterial color="#e7ddd0" roughness:.2/></mesh>
+      <mesh position={[0,.76,0]}><cylinderGeometry args={[.09,.12,.17,24]}/><meshStandardMaterial color="#e7ddd0" roughness={.2}/></mesh>
       <mesh position={[0,.86,0]}><cylinderGeometry args={[.08,.08,.015,24]}/><meshStandardMaterial color="#4b2924"/></mesh>
     </group>
     <mesh position={[0,3.65,-1.35]}><cylinderGeometry args={[.045,.045,.85,12]}/>{wood(palette.trim)}</mesh>
@@ -92,7 +92,7 @@ export const CafeConcepts: React.FC = () => {
    <ambientLight intensity={.72}/><hemisphereLight args={['#c4d7e8','#241c1c',.8]}/>
    <directionalLight position={[-4,7,6]} intensity={2.2} castShadow/>
    <CafeModule x={-5.2} kind={0}/><CafeModule x={0} kind={1}/><CafeModule x={5.2} kind={2}/>
-   <mesh position={[0,-.16,-.6]} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[19,8]}/><meshStandardMaterial color="#101318" roughness:.45/></mesh>
+   <mesh position={[0,-.16,-.6]} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[19,8]}/><meshStandardMaterial color="#101318" roughness={.45}/></mesh>
   </ThreeCanvas>
   <div style={{position:'absolute',top:920,left:0,right:0,textAlign:'center',color:'#f5e9d7',font:'bold 27px Georgia'}}>ТРИ ВАРИАНТА РИСОВКИ ПЕРСОНАЖЕЙ</div>
   <svg viewBox="0 0 941 430" style={{position:'absolute',left:0,right:0,bottom:0,width:'100%',height:430}}>
