@@ -9,12 +9,12 @@ import {
   useVideoConfig,
 } from 'remotion';
 
-const rainSeeds = Array.from({length: 48}, (_, i) => ({
-  x: i < 24 ? 18 + ((i * 47) % 120) : 704 + ((i * 53) % 228),
-  y: (i * 139) % 1540,
-  length: 18 + (i % 5) * 5,
+const rainSeeds = Array.from({length: 42}, (_, i) => ({
+  x: i < 34 ? 6 + ((i * 29) % 104) : (i % 2 ? 617 + ((i * 7) % 19) : 852 + ((i * 3) % 11)),
+  y: (i * 137) % 1450 + 40,
+  length: 18 + (i % 4) * 5,
   speed: 3.2 + (i % 4) * 0.55,
-  opacity: 0.2 + (i % 4) * 0.09,
+  opacity: 0.24 + (i % 4) * 0.07,
 }));
 
 export const CafeScene: React.FC = () => {
@@ -33,25 +33,25 @@ export const CafeScene: React.FC = () => {
         <Img src={staticFile('cafe.png')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
       </AbsoluteFill>
 
-      {/* Vector-style rain: separate streaks, staggered and restricted to the glass. */}
-      {rainSeeds.map((drop, i) => {
-        const y = (drop.y + frame * drop.speed) % 1680;
-        return (
-          <div key={i} style={{
-            position: 'absolute',
-            left: drop.x,
-            top: y,
-            width: 2,
-            height: drop.length,
-            borderRadius: 4,
-            background: 'rgba(196,218,224,0.58)',
-            opacity: drop.opacity,
-            transform: 'rotate(8deg)',
-          }} />
-        );
-      })}
+      {/* Rain is clipped to the exterior panes only: left windows and narrow exposed door-glass edges. */}
+      <svg width="941" height="1672" viewBox="0 0 941 1672" style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
+        <defs>
+          <clipPath id="exterior-glass">
+            <path d="M0 45 L115 92 L115 1425 L0 1390 Z" />
+            <path d="M615 575 L637 575 L637 1005 L615 1005 Z" />
+            <path d="M852 575 L864 575 L864 1005 L852 1005 Z" />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#exterior-glass)">
+          {rainSeeds.map((drop, i) => {
+            const y = (drop.y + frame * drop.speed) % 1680;
+            return <line key={i} x1={drop.x} y1={y} x2={drop.x + 3} y2={y + drop.length}
+              stroke="rgba(196,218,224,0.66)" strokeWidth="2" strokeLinecap="round" opacity={drop.opacity} />;
+          })}
+        </g>
+      </svg>
 
-      {/* SVGator-designed warm accents, animated here by Remotion. */}
+      {/* Warm glow stays centered on the two actual pendant lamps. */}
       <div style={{
         position: 'absolute', left: 210, top: 205, width: 205, height: 56,
         borderRadius: '50%', background: 'rgba(255,185,105,0.15)',
@@ -63,25 +63,25 @@ export const CafeScene: React.FC = () => {
         filter: 'blur(18px)', opacity: lampPulse * 0.8,
       }} />
 
-      {/* Steam curls above the coffee: restrained motion, no character distortion. */}
+      {/* Steam rises from the cups on top of the espresso machine, not from the furniture. */}
       <svg width="941" height="1672" viewBox="0 0 941 1672" style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
         {[0, 1, 2].map((i) => {
-          const drift = Math.sin(seconds * 2.1 + i * 1.2) * 5;
-          const lift = (frame * 0.55 + i * 18) % 28;
-          const x = 394 + i * 24 + drift;
+          const phase = seconds * 1.55 + i * 1.35;
+          const lift = (frame * 0.72 + i * 8) % 24;
+          const x = 450 + i * 35 + Math.sin(phase) * 3;
           return <path key={i}
-            d={`M ${x} ${1122 - lift} C ${x - 8} ${1104 - lift}, ${x + 10} ${1085 - lift}, ${x + 2} ${1063 - lift}`}
-            fill="none" stroke="rgba(250,218,175,0.72)" strokeWidth="3" strokeLinecap="round" />;
+            d={`M ${x} ${688 - lift} C ${x - 8} ${670 - lift}, ${x + 10} ${650 - lift}, ${x + 2} ${630 - lift}`}
+            fill="none" stroke="rgba(235,240,242,0.72)" strokeWidth="2.5" strokeLinecap="round" />;
         })}
       </svg>
 
-      {/* A restrained eyelid blink on the waiter; the rest of the face stays undistorted. */}
+      {/* Restrained eyelid blink; no face deformation. */}
       <svg width="941" height="1672" viewBox="0 0 941 1672" style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
         <ellipse cx="341" cy="801" rx="15" ry={Math.max(1, 34 * blinkA)} fill="#ff894b" opacity={blinkA} />
         <path d="M 328 801 Q 341 808 354 801" fill="none" stroke="#160b0c" strokeWidth="4" strokeLinecap="round" opacity={blinkA} />
       </svg>
 
-      {/* Bell glint marks the arrival beat; no fake walking or face deformation. */}
+      {/* Bell glint stays on the bell at the doorway. */}
       <div style={{
         position: 'absolute', left: 878, top: 472, width: 12, height: 12,
         borderRadius: '50%', background: 'rgba(255,224,164,0.9)',
