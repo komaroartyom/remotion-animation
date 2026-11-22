@@ -25,6 +25,7 @@ export const CafeScene: React.FC = () => {
   const lampPulse = 0.78 + Math.sin(seconds * 1.8) * 0.08;
   const guestArrival = spring({frame: frame - 34, fps, config: {damping: 20, stiffness: 62, mass: 1.1}});
   const bellPulse = interpolate(frame, [42, 48, 55, 62, 69], [0, 0.85, 0.15, 0.65, 0.12], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const blinkA = interpolate(frame, [47, 50, 54, 57, 136, 139, 143, 146], [0, 1, 1, 0, 0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   return (
     <AbsoluteFill style={{backgroundColor: '#15120f', overflow: 'hidden'}}>
@@ -72,6 +73,12 @@ export const CafeScene: React.FC = () => {
             d={`M ${x} ${1122 - lift} C ${x - 8} ${1104 - lift}, ${x + 10} ${1085 - lift}, ${x + 2} ${1063 - lift}`}
             fill="none" stroke="rgba(250,218,175,0.72)" strokeWidth="3" strokeLinecap="round" />;
         })}
+      </svg>
+
+      {/* A restrained eyelid blink on the waiter; the rest of the face stays undistorted. */}
+      <svg width="941" height="1672" viewBox="0 0 941 1672" style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
+        <ellipse cx="341" cy="801" rx="15" ry={Math.max(1, 34 * blinkA)} fill="#ff894b" opacity={blinkA} />
+        <path d="M 328 801 Q 341 808 354 801" fill="none" stroke="#160b0c" strokeWidth="4" strokeLinecap="round" opacity={blinkA} />
       </svg>
 
       {/* Bell glint marks the arrival beat; no fake walking or face deformation. */}
