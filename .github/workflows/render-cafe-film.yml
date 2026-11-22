@@ -1,13 +1,13 @@
-name: Render CafeFilm MP4
+name: Render Cafe Trial MP4
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - "public/**"
       - "src/**"
       - "package.json"
+      - "remotion.config.ts"
       - ".github/workflows/render-cafe-film.yml"
 
 permissions:
@@ -26,16 +26,16 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
-      - name: Render CafeFilm
-        run: npx remotion render src/index.ts CafeFilm out/cafe-film.mp4
-      - name: Commit rendered MP4
+      - name: Render 8-second 3D cafe trial
+        run: npx remotion render src/index.ts CafeTrial out/cafe-trial.mp4
+      - name: Commit rendered trial
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f out/cafe-film.mp4
+          git add -f out/cafe-trial.mp4
           if git diff --cached --quiet; then
-            echo "No rendered video changes to commit."
+            echo "No rendered trial changes."
           else
-            git commit -m "Render CafeFilm MP4"
+            git commit -m "Render 8-second 3D cafe trial"
             git push
           fi
