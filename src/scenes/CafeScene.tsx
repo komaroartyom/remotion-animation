@@ -1,11 +1,11 @@
 import React from 'react';
 import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 
-const rainSeeds = Array.from({length: 42}, (_, i) => ({
-  x: i < 34 ? 6 + ((i * 29) % 104) : (i % 2 ? 617 + ((i * 7) % 19) : 852 + ((i * 3) % 11)),
-  y: (i * 137) % 1450 + 40,
-  length: 18 + (i % 4) * 5,
-  speed: 3.2 + (i % 4) * 0.55,
+const rainSeeds = Array.from({length: 22}, (_, i) => ({
+  x: 24 + ((i * 37) % 78),
+  y: (i * 97) % 440 + 30,
+  length: 15 + (i % 4) * 4,
+  speed: 4 + (i % 3),
   opacity: 0.24 + (i % 4) * 0.07,
 }));
 
@@ -17,7 +17,7 @@ export const CafeScene: React.FC = () => {
   const lampPulse = 0.78 + Math.sin(seconds * 1.8) * 0.08;
   const guestArrival = spring({frame: frame - 34, fps, config: {damping: 20, stiffness: 62, mass: 1.1}});
   const bellPulse = interpolate(frame, [42, 48, 55, 62, 69], [0, 0.85, 0.15, 0.65, 0.12], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const blinkA = interpolate(frame, [47, 50, 54, 57, 136, 139, 143, 146], [0, 1, 1, 0, 0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const blinkA = interpolate(frame, [50, 53, 56, 59, 136, 139, 142, 145], [0, 1, 1, 0, 0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   return (
     <AbsoluteFill style={{backgroundColor: '#15120f', overflow: 'hidden'}}>
@@ -26,14 +26,13 @@ export const CafeScene: React.FC = () => {
       </AbsoluteFill>
       <svg width="941" height="1672" viewBox="0 0 941 1672" style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
         <defs><clipPath id="exterior-glass">
-          <path d="M0 45 L115 92 L115 1425 L0 1390 Z" />
-          <path d="M615 575 L637 575 L637 1005 L615 1005 Z" />
-          <path d="M852 575 L864 575 L864 1005 L852 1005 Z" />
+          <path d="M20 35 L110 72 L110 215 L20 180 Z" />
+          <path d="M20 250 L110 285 L110 465 L20 430 Z" />
         </clipPath></defs>
         <g clipPath="url(#exterior-glass)">
           {rainSeeds.map((drop, i) => {
             const y = (drop.y + frame * drop.speed) % 1680;
-            return <line key={i} x1={drop.x} y1={y} x2={drop.x + 3} y2={y + drop.length}
+            return <line key={i} x1={drop.x} y1={y} x2={drop.x - Math.round(drop.length * 0.16)} y2={y + drop.length}
               stroke="rgba(196,218,224,0.66)" strokeWidth="2" strokeLinecap="round" opacity={drop.opacity} />;
           })}
         </g>
@@ -51,8 +50,8 @@ export const CafeScene: React.FC = () => {
         })}
       </svg>
       <svg width="941" height="1672" viewBox="0 0 941 1672" style={{position:'absolute',inset:0,pointerEvents:'none'}}>
-        <ellipse cx="341" cy="801" rx="15" ry={Math.max(1,34*blinkA)} fill="#ff894b" opacity={blinkA} />
-        <path d="M 328 801 Q 341 808 354 801" fill="none" stroke="#160b0c" strokeWidth="4" strokeLinecap="round" opacity={blinkA} />
+        <ellipse cx="343" cy="800" rx="10" ry={Math.max(1,27*blinkA)} fill="#f87649" opacity={blinkA} />
+        <path d="M 334 802 Q 343 808 352 802" fill="none" stroke="#140c12" strokeWidth="3" strokeLinecap="round" opacity={blinkA} />
       </svg>
       <div style={{position:'absolute',left:878,top:472,width:12,height:12,borderRadius:'50%',background:'rgba(255,224,164,0.9)',opacity:bellPulse,transform:`scale(${0.75+guestArrival*0.2+bellPulse*0.25})`,filter:'blur(1px)'}} />
     </AbsoluteFill>
