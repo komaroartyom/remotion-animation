@@ -1,6 +1,7 @@
 import React from 'react';
 import {Composition} from 'remotion';
 import {Main} from './scenes/Main';
+import {CafeScene} from './scenes/CafeScene';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -12,6 +13,14 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="CafeScene"
+        component={CafeScene}
+        durationInFrames={192}
+        fps={24}
+        width={941}
+        height={1672}
       />
     </>
   );
