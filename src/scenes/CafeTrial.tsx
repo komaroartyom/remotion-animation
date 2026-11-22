@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useMemo, useRef} from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {ThreeCanvas} from '@remotion/three';
+import {useFrame} from '@react-three/fiber';
+import * as THREE from 'three';
 
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
 
@@ -8,9 +10,11 @@ const Cafe3D: React.FC = () => {
   const f = useCurrentFrame();
   const {width, height} = useVideoConfig();
   const cameraZ = 8 - interpolate(f, [0, 191], [0, 0.32], clamp);
+  const cameraX = interpolate(f, [0, 191], [-0.48, 0.48], clamp);
   return (
-    <ThreeCanvas width={width} height={height} camera={{position: [0, 2.25, cameraZ], fov: 48}} style={{position: 'absolute', inset: 0, backgroundColor: '#101722'}}>
+    <ThreeCanvas width={width} height={height} camera={{position: [cameraX, 2.25, cameraZ], fov: 48}} style={{position: 'absolute', inset: 0, backgroundColor: '#101722'}}>
       <ambientLight intensity={0.55} />
+      <WaiterBillboard />
       <hemisphereLight args={['#b9c9dc', '#21161a', 0.65]} />
       <spotLight position={[-2.7, 4.7, 1.5]} angle={0.62} penumbra={0.8} intensity={95} color="#ffc77d" castShadow />
       <pointLight position={[2.5, 2.5, -2.2]} intensity={18} color="#d48b52" />
@@ -37,6 +41,39 @@ const Cafe3D: React.FC = () => {
       <mesh position={[0.2, 0.6, -1.4]}><sphereGeometry args={[0.36, 24, 16]} /><meshBasicMaterial color="#e7a95f" transparent opacity={0.055} /></mesh>
     </ThreeCanvas>
   );
+};
+
+// A flat illustrated cutout in the 3D world. It rotates only around Y,
+// so the character keeps looking toward the camera without tilting with it.
+const WaiterBillboard: React.FC = () => {
+  const mesh = useRef<THREE.Mesh>(null);
+  const texture = useMemo(() => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="760" viewBox="0 0 420 760">
+      <g stroke="#17151a" stroke-width="12" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M105 310 Q115 255 205 250 Q300 250 320 325 L340 540 L80 540Z" fill="#242b35"/>
+        <path d="M158 270 L208 335 L258 270 L275 470 L145 470Z" fill="#e9e0d2" stroke-width="8"/>
+        <path d="M198 325 L211 344 L228 325 L239 455 L188 455Z" fill="#7a343b" stroke-width="6"/>
+        <path d="M155 255 Q120 170 180 115 Q245 85 290 145 Q325 220 275 270 Q220 310 170 270Z" fill="#d7a583"/>
+        <path d="M148 190 Q145 95 220 88 Q310 95 318 190 L286 165 Q245 135 205 155 Q170 165 155 220Z" fill="#342b2c"/>
+        <path d="M177 205 Q195 190 210 205 M242 205 Q260 190 278 205" fill="none" stroke-width="8"/>
+        <path d="M218 220 L207 240 L226 244" fill="none" stroke-width="6"/>
+        <path d="M195 265 Q225 280 255 263" fill="none" stroke="#81564b" stroke-width="6"/>
+        <path d="M112 530 L100 690 L75 735 L160 735 L195 590 L230 735 L315 735 L285 685 L300 530Z" fill="#171c25"/>
+        <path d="M85 720 H165 L170 748 H62 Q55 735 85 720 M235 720 H320 L345 748 H225Z" fill="#0e1118"/>
+        <path d="M300 340 Q355 370 345 455 L320 495 Q295 500 292 475 L275 400" fill="#d7a583"/>
+      </g></svg>`;
+    const map = new THREE.TextureLoader().load('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg));
+    map.colorSpace = THREE.SRGBColorSpace;
+    return map;
+  }, []);
+  useFrame(({camera}) => {
+    if (!mesh.current) return;
+    mesh.current.lookAt(camera.position.x, mesh.current.position.y, camera.position.z);
+  });
+  return <mesh ref={mesh} position={[-1.35, 0.1, -0.75]} scale={[1.45, 2.65, 1]}>
+    <planeGeometry args={[1, 1]} />
+    <meshBasicMaterial map={texture} transparent alphaTest={0.02} side={THREE.DoubleSide} />
+  </mesh>;
 };
 
 const WaiterIllustration: React.FC = () => {
@@ -70,7 +107,6 @@ export const CafeTrial: React.FC = () => {
   const titleOpacity = interpolate(f, [0, 18, 172, 191], [0, 1, 1, 0], clamp);
   return <AbsoluteFill style={{backgroundColor: '#101722', overflow: 'hidden'}}>
     <Cafe3D />
-    <WaiterIllustration />
     <AbsoluteFill style={{background: 'linear-gradient(180deg,rgba(5,8,15,.25),transparent 35%,rgba(5,7,12,.48))', pointerEvents: 'none'}} />
     <div style={{position: 'absolute', left: 48, right: 48, bottom: 130, color: '#f3e4ca', textAlign: 'center', fontFamily: 'Georgia,serif', fontSize: 34, lineHeight: 1.3, textShadow: '0 3px 16px #000', opacity: titleOpacity}}>
       Кафе почти закрылось. Дождь всё не прекращался.
