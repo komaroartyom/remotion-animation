@@ -36,7 +36,7 @@ const CafeModule: React.FC<{x:number;kind:0|1|2}> = ({x,kind}) => {
     <mesh position={[0,3.65,-1.35]}><cylinderGeometry args={[.045,.045,.85,12]}/>{wood(palette.trim)}</mesh>
     <mesh position={[0,3.15,-1.35]}><coneGeometry args={[.43,.48,32,1,true]}/><meshStandardMaterial color={kind===1?'#d4b58b':'#e4b76d'} emissive="#c77b36" emissiveIntensity={.55} side={THREE.DoubleSide}/></mesh>
     <pointLight position={[0,2.9,-.8]} color="#ffbf78" intensity={kind===1?3:5} distance={5}/>
-    {kind===1 && <group>{Array.from({length:7},(_,i)=><mesh key={i} position={[-2.15+i*.7,.1,-1.55]}><boxGeometry args={[.045,3.3,.16]}/><meshStandardMaterial color="#77736d" roughness:.95/></mesh>)}</group>}
+    {kind===1 && <group>{Array.from({length:7},(_,i)=><mesh key={i} position={[-2.15+i*.7,.1,-1.55]}><boxGeometry args={[.045,3.3,.16]}/><meshStandardMaterial color="#77736d" roughness={.95}/></mesh>)}</group>}
     {kind===2 && <group>{[-1.65,0,1.65].map((wx,i)=><mesh key={i} position={[wx,2.02,-1.55]}><torusGeometry args={[.72,.065,10,48,Math.PI]}/><meshStandardMaterial color="#d0a86b" metalness:.45 roughness:.3/></mesh>)}</group>}
     <mesh position={[0,1.2,-1.62]}><boxGeometry args={[4.8,.055,.055]}/>{wood(palette.trim)}</mesh>
   </group>;
