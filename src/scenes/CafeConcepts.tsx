@@ -43,42 +43,99 @@ const CafeModule: React.FC<{x:number;kind:0|1|2}> = ({x,kind}) => {
 };
 
 const CharacterCard: React.FC<{x:number;variant:0|1|2}> = ({x,variant}) => {
- const f=useCurrentFrame(); const bob=Math.sin(f/9+variant)*2;
- const styles=[
-  {head:'#efbd99',hair:'#34251f',coat:'#263d59',shirt:'#f1e8d8',line:'#17171b'},
-  {head:'#dca783',hair:'#2a2425',coat:'#35413d',shirt:'#e8dfcb',line:'#171719'},
-  {head:'#f0c5a1',hair:'#4a3428',coat:'#4b3039',shirt:'#f2e8d7',line:'#181619'}
- ][variant];
- const waiter = (cx:number, scale:number) => <g transform={`translate(${cx} ${bob}) scale(${scale})`} stroke={styles.line} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round">
-  <path d="M-43 135 Q-58 90 -35 65 Q-10 48 28 64 Q55 82 48 142 L40 225H-48Z" fill={styles.coat}/>
-  <path d="M-22 68L0 98L22 68L25 160H-25Z" fill={styles.shirt}/>
-  <path d="M-8 100L0 111L9 100L12 157H-12Z" fill="#8b4444"/>
-  <path d="M-37 78Q-64 98 -56 153L-39 168L-24 126M39 78Q63 105 56 151L42 168L26 126" fill={styles.coat}/>
-  <path d="M-26 61Q-37 12 -7 0Q32 -8 39 31Q42 69 9 78Q-17 77 -26 61Z" fill={styles.head}/>
-  <path d="M-29 33Q-34 -9 2 -12Q39 -8 42 30L25 17Q2 3 -20 29Z" fill={styles.hair}/>
-  <path d="M-17 39Q-8 33 -1 39M14 39Q23 33 29 39" fill="none" strokeWidth="5"/>
-  <ellipse cx="-8" cy="42" rx="3.4" ry="5" fill="#181619" stroke="none"/><ellipse cx="21" cy="42" rx="3.4" ry="5" fill="#181619" stroke="none"/>
-  <path d="M5 45L0 57L9 59" fill="none" strokeWidth="4"/>
-  <path d={variant===1?"M-7 68Q8 58 22 68":"M-7 68Q8 76 22 67"} fill="none" stroke="#754b43" strokeWidth="4"/>
-  <path d="M-35 223L-39 282H-8L1 233L12 282H42L32 223Z" fill="#26232a"/>
-  <path d="M-43 281H-6L-4 295H-53Q-56 288 -43 281M13 281H45L57 295H10Z" fill="#18181c"/>
- </g>;
- const guest = (cx:number, scale:number) => <g transform={`translate(${cx} 0) scale(${scale})`} stroke="#19181a" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round">
-  <path d="M-43 135Q-58 90 -35 65Q-10 48 28 64Q55 82 48 142L40 225H-48Z" fill="#4a4b50"/>
-  <path d="M-22 68L0 98L22 68L25 160H-25Z" fill="#c9b99e"/>
-  <path d="M-26 61Q-37 12 -7 0Q32 -8 39 31Q42 69 9 78Q-17 77 -26 61Z" fill="#d4a98a"/>
-  <path d="M-31 31Q-28 -12 5 -13Q42 -8 43 33L27 19Q0 0 -22 34Z" fill="#c2c0b7"/>
-  <path d="M-17 39Q-8 33 -1 39M14 39Q23 33 29 39" fill="none" strokeWidth="5"/>
-  <ellipse cx="-8" cy="42" rx="3.4" ry="5" fill="#181619" stroke="none"/><ellipse cx="21" cy="42" rx="3.4" ry="5" fill="#181619" stroke="none"/>
-  <path d="M5 45L0 57L9 59M-7 68Q8 74 22 67" fill="none" stroke="#765047" strokeWidth="4"/>
-  <path d="M-35 223L-39 282H-8L1 233L12 282H42L32 223Z" fill="#373941"/>
-  <path d="M-43 281H-6L-4 295H-53Q-56 288 -43 281M13 281H45L57 295H10Z" fill="#18181c"/>
- </g>;
- return <g transform={`translate(${x} 0)`}>
+ const f=useCurrentFrame();
+ const bob=Math.sin(f/9+variant)*2;
+ const labels = ['РЕАЛИСТИЧНАЯ ИЛЛЮСТРАЦИЯ','КАРИКАТУРНЫЙ КОМИКС','АНИМЕ / ГРАФИЧНЫЙ СТИЛЬ'];
+ return <g transform={\`translate(\${x} 0)\`}>
    <rect x="-145" y="0" width="290" height="380" rx="18" fill="#f4ead8" stroke="#242126" strokeWidth="4"/>
-   {waiter(-45,.78)}{guest(58,.72)}
+   {variant===0 && <g transform={\`translate(0 \${bob})\`}>
+     <defs>
+       <linearGradient id="realCoat" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#344b63"/><stop offset="1" stopColor="#182b40"/></linearGradient>
+       <linearGradient id="realSkin" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#f5d0b2"/><stop offset="1" stopColor="#c98769"/></linearGradient>
+     </defs>
+     <g stroke="#5c443b" strokeWidth="1.5" strokeLinejoin="round">
+       <path d="M-111 225Q-119 173 -91 148Q-68 130 -42 147L-31 284H-116Z" fill="url(#realCoat)"/>
+       <path d="M-87 151L-72 176L-57 151L-50 225H-95Z" fill="#eee5d8"/>
+       <path d="M-73 176L-64 188L-55 176L-52 232H-77Z" fill="#9d4c43"/>
+       <path d="M-102 164Q-120 190 -113 229L-100 237L-88 199M-43 164Q-25 190 -34 226L-48 237L-57 199" fill="none" stroke="url(#realCoat)" strokeWidth="13" strokeLinecap="round"/>
+       <path d="M-91 145Q-101 112 -83 91Q-63 70 -43 93Q-30 113 -42 145Q-64 166 -91 145Z" fill="url(#realSkin)"/>
+       <path d="M-94 119Q-100 85 -74 79Q-43 73 -35 106L-48 99Q-70 87 -88 119Z" fill="#352821"/>
+       <path d="M-83 121Q-74 115 -68 121M-57 120Q-50 115 -44 120" fill="none" stroke="#49352d" strokeWidth="2.5"/>
+       <ellipse cx="-73" cy="126" rx="2.4" ry="3.3" fill="#282321" stroke="none"/><ellipse cx="-50" cy="126" rx="2.4" ry="3.3" fill="#282321" stroke="none"/>
+       <path d="M-62 128L-66 137L-59 139M-72 148Q-60 153 -49 146" fill="none" stroke="#9b5f51" strokeWidth="2"/>
+       <path d="M-102 283L-105 309H-78L-69 285L-61 309H-34L-42 283Z" fill="#28272b"/>
+       <path d="M-108 308H-77L-74 316H-116Q-118 312 -108 308M-61 308H-32L-24 316H-65Z" fill="#17191d"/>
+     </g>
+     <g stroke="#655047" strokeWidth="1.5" strokeLinejoin="round">
+       <path d="M20 225Q13 173 38 151Q60 132 87 148L100 284H18Z" fill="#8a7460"/>
+       <path d="M41 151L58 176L73 151L80 225H33Z" fill="#e6d6bf"/>
+       <path d="M30 165Q13 189 23 228L37 237L47 198M86 165Q107 188 97 228L83 237L72 198" fill="none" stroke="#8a7460" strokeWidth="13" strokeLinecap="round"/>
+       <path d="M39 146Q29 112 48 92Q68 72 88 96Q101 117 88 147Q62 164 39 146Z" fill="#e5b99b"/>
+       <path d="M36 116Q38 83 66 82Q96 82 98 117L85 105Q61 91 42 122Z" fill="#bdb8ac"/>
+       <path d="M47 121Q55 116 61 121M72 121Q80 116 86 121" fill="none" stroke="#5d514a" strokeWidth="2.5"/>
+       <ellipse cx="56" cy="126" rx="2.4" ry="3.3" fill="#292522" stroke="none"/><ellipse cx="79" cy="126" rx="2.4" ry="3.3" fill="#292522" stroke="none"/>
+       <path d="M68 129L64 138L71 140M55 148Q68 153 81 147" fill="none" stroke="#a36f5e" strokeWidth="2"/>
+       <path d="M30 283L28 309H54L62 285L72 309H98L91 283Z" fill="#55515a"/>
+       <path d="M25 308H55L58 316H19Q17 312 25 308M72 308H100L108 316H69Z" fill="#242328"/>
+     </g>
+   </g>}
+   {variant===1 && <g transform={\`translate(0 \${bob})\`} stroke="#211c1c" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+     <g>
+       <path d="M-113 222Q-130 164 -95 147Q-65 130 -37 157L-30 282H-119Z" fill="#e3a52e"/>
+       <path d="M-91 154L-74 182L-55 154L-49 231H-99Z" fill="#fff0c9"/>
+       <path d="M-111 173Q-133 190 -118 238L-96 247L-83 200M-39 173Q-16 189 -32 238L-53 246L-67 199" fill="none" strokeWidth="18"/>
+       <path d="M-96 143Q-116 105 -91 77Q-66 48 -37 76Q-17 104 -37 143Q-66 171 -96 143Z" fill="#f0b98c"/>
+       <path d="M-101 112Q-109 65 -69 62Q-31 59 -29 108L-47 94Q-73 80 -94 119Z" fill="#29201e"/>
+       <path d="M-88 113Q-75 102 -63 113M-53 112Q-41 102 -31 113" fill="none" strokeWidth="5"/>
+       <ellipse cx="-74" cy="119" rx="5" ry="7" fill="#211c1c" stroke="none"/><ellipse cx="-42" cy="119" rx="5" ry="7" fill="#211c1c" stroke="none"/>
+       <path d="M-60 123L-67 137L-54 139M-80 151Q-62 166 -43 149" fill="none" stroke="#7e4035" strokeWidth="5"/>
+       <path d="M-109 281L-112 308H-77L-67 286L-58 308H-25L-35 281Z" fill="#37323a"/>
+       <path d="M-118 308H-77L-73 319H-128Q-132 313 -118 308M-58 308H-23L-12 319H-64Z" fill="#211e22"/>
+     </g>
+     <g>
+       <path d="M21 223Q7 165 43 150Q75 133 102 158L110 282H18Z" fill="#586c55"/>
+       <path d="M45 154L62 181L80 154L84 229H37Z" fill="#f4e6ca"/>
+       <path d="M26 174Q4 194 19 239L40 247L50 200M99 174Q122 193 107 239L86 247L77 200" fill="none" strokeWidth="18"/>
+       <path d="M37 144Q17 108 41 80Q68 51 96 80Q116 110 94 145Q67 169 37 144Z" fill="#dba47e"/>
+       <path d="M33 111Q35 63 73 65Q111 68 108 117L89 98Q65 83 42 119Z" fill="#c7c2b6"/>
+       <path d="M43 114Q55 103 66 114M78 113Q90 102 101 113" fill="none" strokeWidth="5"/>
+       <ellipse cx="55" cy="121" rx="5" ry="7" fill="#211c1c" stroke="none"/><ellipse cx="89" cy="120" rx="5" ry="7" fill="#211c1c" stroke="none"/>
+       <path d="M72 124L66 138L79 140M51 151Q69 165 91 148" fill="none" stroke="#875849" strokeWidth="5"/>
+       <path d="M28 281L26 308H60L69 285L78 308H111L103 281Z" fill="#3b3b42"/>
+       <path d="M21 308H60L64 319H13Q9 313 21 308M78 308H113L124 319H72Z" fill="#211e22"/>
+     </g>
+   </g>}
+   {variant===2 && <g transform={\`translate(0 \${bob})\`} stroke="#25202b" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round">
+     <g>
+       <path d="M-111 225L-99 160L-70 143L-42 160L-31 286H-119Z" fill="#493c66"/>
+       <path d="M-94 157L-72 186L-52 157L-48 239H-98Z" fill="#f8f0e7"/>
+       <path d="M-100 163L-119 223L-103 240L-83 195M-43 163L-24 223L-41 240L-60 195" fill="none" stroke="#493c66" strokeWidth="13"/>
+       <path d="M-90 145Q-105 110 -88 87Q-70 68 -49 87Q-34 111 -45 145Q-66 160 -90 145Z" fill="#f2c7a9"/>
+       <path d="M-94 112L-108 79L-83 91L-75 61L-57 84L-36 72L-42 111L-57 99L-78 102Z" fill="#25202b"/>
+       <path d="M-86 119Q-76 108 -65 117M-59 117Q-49 107 -40 117" fill="none" strokeWidth="3"/>
+       <path d="M-83 120Q-74 114 -67 120Q-74 129 -83 120M-57 120Q-49 113 -42 119Q-50 129 -57 120" fill="#fff" stroke="#25202b" strokeWidth="1.5"/>
+       <circle cx="-74" cy="121" r="3" fill="#704b9d" stroke="none"/><circle cx="-50" cy="120" r="3" fill="#704b9d" stroke="none"/>
+       <path d="M-62 124L-67 136L-58 138M-76 148Q-62 155 -48 145" fill="none" stroke="#a45e67" strokeWidth="2.5"/>
+       <path d="M-106 284L-111 314H-81L-69 286L-57 314H-28L-37 284Z" fill="#282630"/>
+       <path d="M-114 313H-80L-77 320H-121Q-124 316 -114 313M-57 313H-27L-18 320H-62Z" fill="#17171d"/>
+     </g>
+     <g>
+       <path d="M22 225L33 159L63 143L92 159L105 286H18Z" fill="#315e69"/>
+       <path d="M39 157L62 185L83 157L87 239H35Z" fill="#f5eadc"/>
+       <path d="M32 165L14 224L30 241L49 196M93 165L112 224L96 241L76 196" fill="none" stroke="#315e69" strokeWidth="13"/>
+       <path d="M39 145Q25 109 43 86Q63 67 85 88Q102 111 88 145Q64 161 39 145Z" fill="#eab99a"/>
+       <path d="M35 111L26 77L49 91L57 60L71 85L99 72L91 112L76 99L53 102Z" fill="#d0c9bd"/>
+       <path d="M43 119Q53 108 64 117M72 117Q83 107 94 117" fill="none" strokeWidth="3"/>
+       <path d="M46 120Q55 113 63 120Q55 130 46 120M74 120Q83 113 91 119Q83 130 74 120" fill="#fff" stroke="#25202b" strokeWidth="1.5"/>
+       <circle cx="55" cy="121" r="3.3" fill="#3c80a2" stroke="none"/><circle cx="83" cy="120" r="3.3" fill="#3c80a2" stroke="none"/>
+       <path d="M68 124L64 136L73 138M53 148Q67 155 84 145" fill="none" stroke="#a45e67" strokeWidth="2.5"/>
+       <path d="M29 284L26 314H57L67 286L79 314H108L99 284Z" fill="#30303a"/>
+       <path d="M20 313H57L60 320H13Q10 316 20 313M79 313H110L119 320H73Z" fill="#17171d"/>
+     </g>
+   </g>}
    <path d="M-118 321H118" stroke="#c3ad91" strokeWidth="2"/>
-   <text x="0" y="350" textAnchor="middle" fontSize="19" fontWeight="800" fill="#28232a">ПЕРСОНАЖ {variant+1}</text>
+   <text x="0" y="349" textAnchor="middle" fontSize="14" fontWeight="800" fill="#28232a">{labels[variant]}</text>
+   <text x="0" y="367" textAnchor="middle" fontSize="11" fill="#786957">ПЕРСОНАЖИ · ВАРИАНТ {variant+1}</text>
  </g>;
 };
 
