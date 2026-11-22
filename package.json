@@ -10,9 +10,8 @@
     "still": "remotion still src/index.ts Main out/preview.png"
   },
   "dependencies": {
-    "@remotion/cli": "4.0.409",
-    "@remotion/google-fonts": "4.0.409",
-    "remotion": "4.0.409",
+    "@remotion/cli": "4.0.545",
+    "remotion": "4.0.545",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
