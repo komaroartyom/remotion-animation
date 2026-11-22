@@ -4,7 +4,7 @@
   "private": true,
   "description": "Vertical 2D animation workspace built with Remotion",
   "scripts": {
-    "dev": "remotion studio src/index.ts",
+    "dev": "remotion studio src/index.ts --ipv4",
     "build": "remotion bundle src/index.ts",
     "render": "remotion render src/index.ts Main out/main.mp4",
     "still": "remotion still src/index.ts Main out/preview.png"
